@@ -1,5 +1,6 @@
 import json
 import os
+from more_itertools import chunked
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from livereload import Server
@@ -34,13 +35,11 @@ def rebuild_site():
     books = load_books('library.json')
 
     rendered_page = template.render(
-        books=books,
+        book_sets=list(chunked(books, 2)),
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
-
-    print('Site rebuild')
 
 
 def main():
