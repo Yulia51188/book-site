@@ -37,11 +37,15 @@ def rebuild_site():
     template = env.get_template('template.html')
 
     books = load_books('library.json')
-    paged_books = chunked(books, BOOKS_ON_PAGE)
+    paged_books = list(chunked(books, BOOKS_ON_PAGE))
+    page_count = len(paged_books)
+    print(page_count)
 
     for page_index, books_on_page in enumerate(paged_books, start=1):
         rendered_page = template.render(
             book_sets=list(chunked(books_on_page, COL_NUM)),
+            current_page=page_index,
+            page_count=page_count,
         )
         
         os.makedirs('pages', exist_ok=True)
