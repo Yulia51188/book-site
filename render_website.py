@@ -7,6 +7,10 @@ from livereload import Server
 from urllib.parse import unquote, urlparse
 
 
+BOOKS_ON_PAGE = 10
+COL_NUM = 2
+
+
 def load_books(file_path):
     with open(file_path, 'r') as file:
         books = json.loads(file.read())
@@ -33,20 +37,24 @@ def rebuild_site():
     template = env.get_template('template.html')
 
     books = load_books('library.json')
+    paged_books = chunked(books, BOOKS_ON_PAGE)
 
-    rendered_page = template.render(
-        book_sets=list(chunked(books, 2)),
-    )
-
-    with open('index.html', 'w', encoding="utf8") as file:
-        file.write(rendered_page)
+    for page_index, books_on_page in enumerate(paged_books, start=1):
+        rendered_page = template.render(
+            book_sets=list(chunked(books_on_page, COL_NUM)),
+        )
+        
+        os.makedirs('pages', exist_ok=True)
+        html_path = os.path.join('pages', f'index{page_index}.html')
+        with open(html_path, 'w', encoding="utf8") as file:
+            file.write(rendered_page)
 
 
 def main():
     server = Server()
     rebuild_site()
     server.watch('template.html', rebuild_site)
-    server.serve(root='.')
+    server.serve(root='./pages')
 
 
 if __name__ == '__main__':
