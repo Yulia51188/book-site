@@ -2,6 +2,7 @@ import json
 import os
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from livereload import Server
 from urllib.parse import unquote, urlparse
 
 
@@ -22,7 +23,8 @@ def add_filename_books(books):
         book['cover_filename'] = parse_filename(book['image_url'])
 
 
-def main():
+def rebuild_site():
+
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -37,6 +39,15 @@ def main():
 
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
+
+    print('Site rebuild')
+
+
+def main():
+    server = Server()
+    rebuild_site()
+    server.watch('template.html', rebuild_site)
+    server.serve(root='.')
 
 
 if __name__ == '__main__':
