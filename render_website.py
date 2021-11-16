@@ -58,7 +58,7 @@ def main():
     server = Server()
     rebuild_site()
     server.watch('template.html', rebuild_site)
-    server.serve(root='./pages')
+    server.serve(root='.')
 
 
 if __name__ == '__main__':
