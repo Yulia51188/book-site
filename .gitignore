@@ -3,9 +3,6 @@ books/
 images/
 library.json
 
-# Result of rendering
-index.html
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
