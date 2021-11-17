@@ -6,6 +6,7 @@ pages/
 books/
 images/
 library.json
+media/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
