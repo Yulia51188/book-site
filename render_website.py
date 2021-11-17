@@ -39,7 +39,6 @@ def rebuild_site():
     books = load_books('library.json')
     paged_books = list(chunked(books, BOOKS_ON_PAGE))
     page_count = len(paged_books)
-    print(page_count)
 
     for page_index, books_on_page in enumerate(paged_books, start=1):
         rendered_page = template.render(
