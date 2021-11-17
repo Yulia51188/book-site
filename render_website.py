@@ -34,9 +34,9 @@ def rebuild_site():
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
     )
-    template = env.get_template('template.html')
+    template = env.get_template('templates/template.html')
 
-    books = load_books('library.json')
+    books = load_books('media/library.json')
     paged_books = list(chunked(books, BOOKS_ON_PAGE))
     page_count = len(paged_books)
 
@@ -56,7 +56,7 @@ def rebuild_site():
 def main():
     server = Server()
     rebuild_site()
-    server.watch('template.html', rebuild_site)
+    server.watch('templates/template.html', rebuild_site)
     server.serve(root='.')
 
 
